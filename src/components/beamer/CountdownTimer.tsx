@@ -60,6 +60,9 @@ export function CountdownTimer({ endTime, className = '', label = 'Deadline Uplo
   }
 
   const isUrgent = timeLeft.total > 0 && timeLeft.total < 60000; // Last minute
+  const hasHours = timeLeft.hours > 0;
+  // Dynamic font size: smaller when showing hours (6 digits)
+  const digitSize = hasHours ? 'text-6xl' : 'text-8xl';
 
   return (
     <div
@@ -71,33 +74,33 @@ export function CountdownTimer({ endTime, className = '', label = 'Deadline Uplo
         <span className="text-sm text-wyt-text-muted uppercase tracking-wider">{label}</span>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className={`flex items-center ${hasHours ? 'gap-2' : 'gap-3'}`}>
         {/* Hours */}
-        {timeLeft.hours > 0 && (
+        {hasHours && (
           <>
             <div className="flex flex-col items-center">
-              <div className={`text-8xl font-bold tabular-nums ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>
+              <div className={`${digitSize} font-bold tabular-nums ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>
                 {String(timeLeft.hours).padStart(2, '0')}
               </div>
               <span className="text-xs text-wyt-text-muted mt-1">STD</span>
             </div>
-            <div className={`text-8xl font-bold ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>:</div>
+            <div className={`${digitSize} font-bold ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>:</div>
           </>
         )}
 
         {/* Minutes */}
         <div className="flex flex-col items-center">
-          <div className={`text-8xl font-bold tabular-nums ${isUrgent ? 'text-red-500 animate-pulse' : 'text-wyt-accent'}`}>
+          <div className={`${digitSize} font-bold tabular-nums ${isUrgent ? 'text-red-500 animate-pulse' : 'text-wyt-accent'}`}>
             {String(timeLeft.minutes).padStart(2, '0')}
           </div>
           <span className="text-xs text-wyt-text-muted mt-1">MIN</span>
         </div>
 
-        <div className={`text-8xl font-bold ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>:</div>
+        <div className={`${digitSize} font-bold ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>:</div>
 
         {/* Seconds */}
         <div className="flex flex-col items-center">
-          <div className={`text-8xl font-bold tabular-nums ${isUrgent ? 'text-red-500 animate-pulse' : 'text-wyt-accent'}`}>
+          <div className={`${digitSize} font-bold tabular-nums ${isUrgent ? 'text-red-500 animate-pulse' : 'text-wyt-accent'}`}>
             {String(timeLeft.seconds).padStart(2, '0')}
           </div>
           <span className="text-xs text-wyt-text-muted mt-1">SEK</span>
