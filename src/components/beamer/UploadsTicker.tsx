@@ -47,7 +47,7 @@ export function UploadsTicker({
       setIsPaused(true);
       setCurrentIndex(0);
 
-      // Clear any existing timeout
+      // Clear any existing timeout before setting a new one
       if (pauseTimeoutRef.current) {
         clearTimeout(pauseTimeoutRef.current);
       }
@@ -62,13 +62,17 @@ export function UploadsTicker({
     } else if (newImageIds.size === 0) {
       previousNewImageCount.current = 0;
     }
+    // NOTE: No cleanup here - timeout should run to completion even if dependencies change
+  }, [newImageIds, pauseDuration, onNewImagesShown]);
 
+  // Cleanup timeout only on unmount
+  useEffect(() => {
     return () => {
       if (pauseTimeoutRef.current) {
         clearTimeout(pauseTimeoutRef.current);
       }
     };
-  }, [newImageIds, pauseDuration, onNewImagesShown]);
+  }, []);
 
   // Ticker animation - advance index periodically
   useEffect(() => {
@@ -101,10 +105,10 @@ export function UploadsTicker({
   }[visibleCount] || 'grid-cols-5';
 
   // Calculate max width for centered layout with fewer images
-  // For 1-2 images: constrain width to keep them centered and not too large
-  // For 3-5 images: use full width with minimal padding
-  const maxWidthClass = visibleCount <= 2 ? 'max-w-4xl' : '';
-  const paddingClass = visibleCount <= 2 ? 'px-8' : 'px-4';
+  // For 1 image: constrain width to keep it centered and not too large
+  // For 2-5 images: use full width with minimal padding for consistent height
+  const maxWidthClass = visibleCount === 1 ? 'max-w-4xl' : '';
+  const paddingClass = visibleCount === 1 ? 'px-8' : 'px-4';
 
   return (
     <div className={`flex items-center justify-center h-full ${className}`}>

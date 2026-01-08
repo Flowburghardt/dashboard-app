@@ -8,6 +8,7 @@ import { CameraFeed } from './beamer/CameraFeed';
 import { SlideshowView } from './beamer/SlideshowView';
 import { LeaderboardView } from './beamer/LeaderboardView';
 import { TimerControlModal } from './beamer/TimerControlModal';
+import { CountdownTimer } from './beamer/CountdownTimer';
 import type { BeamerMode, DashboardSettings } from './beamer/types';
 
 const fadeTransition = {
@@ -149,15 +150,25 @@ export function Dashboard() {
   return (
     <div className="h-screen w-screen bg-gradient-to-br from-[#0a0a0f] to-[#1a1a2e] text-white flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="flex-shrink-0 text-center pt-6 pb-3">
+      <header className="flex-shrink-0 flex items-center justify-center pt-6 pb-3 px-8 relative">
         <img
           src="/LICHT-BLICK-RAUM-TYPO-Logo.svg"
           alt="Licht.Blick.Raum"
-          className="h-20 mx-auto"
+          className="h-20"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = 'none';
           }}
         />
+        {/* Timer - only visible in live2 mode */}
+        {mode === 'live2' && (
+          <div className="absolute right-8 top-1/2 -translate-y-1/2">
+            <CountdownTimer
+              endTime={settings.countdownEndTime}
+              label={settings.countdownLabel || 'Deadline Uploads'}
+              onClick={() => setShowTimerModal(true)}
+            />
+          </div>
+        )}
       </header>
 
       {/* Content */}
@@ -204,11 +215,9 @@ export function Dashboard() {
               <motion.div key="live2" {...fadeTransition} className="h-full">
                 <LiveDashboard2
                   recentImages={recentImages}
-                  settings={settings}
                   visibleCount={live2VisibleCount}
                   newImageIds={newImageIds}
                   onClearNewImages={clearNewImages}
-                  onTimerClick={() => setShowTimerModal(true)}
                 />
               </motion.div>
             ) : null}

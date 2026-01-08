@@ -1,25 +1,20 @@
 import { motion } from 'framer-motion';
 import { UploadsTicker } from './UploadsTicker';
-import { CountdownTimer } from './CountdownTimer';
-import type { RecentImage, DashboardSettings } from './types';
+import type { RecentImage } from './types';
 
 interface LiveDashboard2Props {
   recentImages: RecentImage[];
-  settings: DashboardSettings;
   visibleCount: number;
   newImageIds: Set<number>;
   onClearNewImages: () => void;
-  onTimerClick?: () => void;
   className?: string;
 }
 
 export function LiveDashboard2({
   recentImages,
-  settings,
   visibleCount,
   newImageIds,
   onClearNewImages,
-  onTimerClick,
   className = '',
 }: LiveDashboard2Props) {
   return (
@@ -29,16 +24,6 @@ export function LiveDashboard2({
       exit={{ opacity: 0 }}
       className={`flex flex-col h-full relative ${className}`}
     >
-      {/* Timer - absolute positioned top-right */}
-      <div className="absolute top-2 right-8 z-10">
-        <CountdownTimer
-          endTime={settings.countdownEndTime}
-          label={settings.countdownLabel || 'Deadline Uploads'}
-          onClick={onTimerClick}
-          className="!p-3 !rounded-lg"
-        />
-      </div>
-
       {/* Main Content: Ticker */}
       <div className="flex-1 relative overflow-hidden min-h-0">
         <UploadsTicker
@@ -47,7 +32,7 @@ export function LiveDashboard2({
           newImageIds={newImageIds}
           onNewImagesShown={onClearNewImages}
           tickerInterval={4000}
-          pauseDuration={5000}
+          pauseDuration={20000}
           className="h-full"
         />
       </div>
