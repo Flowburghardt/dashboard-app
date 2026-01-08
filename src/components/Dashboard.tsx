@@ -187,7 +187,7 @@ export function Dashboard() {
               </motion.div>
             ) : (
               <motion.div key="leaderboard" {...fadeTransition} className="h-full p-6">
-                <LeaderboardView url={settings.leaderboardUrl} className="h-full" />
+                <LeaderboardView apiUrl={settings.fotoChallengeApiUrl} className="h-full" />
               </motion.div>
             )}
           </AnimatePresence>
