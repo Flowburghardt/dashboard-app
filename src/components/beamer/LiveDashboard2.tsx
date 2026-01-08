@@ -27,25 +27,16 @@ export function LiveDashboard2({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={`flex flex-col h-full ${className}`}
+      className={`flex flex-col h-full relative ${className}`}
     >
-      {/* Header with Timer */}
-      <div className="flex-shrink-0 flex items-center justify-between px-8 py-4">
-        {/* Left spacer for balance */}
-        <div className="w-48" />
-
-        {/* Center: Title or empty */}
-        <div className="flex-1" />
-
-        {/* Right: Countdown Timer (compact) */}
-        <div className="w-64">
-          <CountdownTimer
-            endTime={settings.countdownEndTime}
-            label={settings.countdownLabel || 'Deadline Uploads'}
-            onClick={onTimerClick}
-            className="!p-3 !rounded-lg"
-          />
-        </div>
+      {/* Timer - absolute positioned top-right */}
+      <div className="absolute top-2 right-8 z-10">
+        <CountdownTimer
+          endTime={settings.countdownEndTime}
+          label={settings.countdownLabel || 'Deadline Uploads'}
+          onClick={onTimerClick}
+          className="!p-3 !rounded-lg"
+        />
       </div>
 
       {/* Main Content: Ticker */}
