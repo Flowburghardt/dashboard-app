@@ -75,10 +75,13 @@ export function Dashboard() {
 
   // Keyboard controls
   const handleKeyPress = useCallback((e: KeyboardEvent) => {
-    // Shift+1-5: Change visible count for Live2 mode
-    if (e.shiftKey && e.key >= '1' && e.key <= '5') {
-      setLive2VisibleCount(parseInt(e.key, 10));
-      return;
+    // Shift+1-5: Change visible count for Live2 mode (use e.code for physical key)
+    if (e.shiftKey) {
+      const digitMatch = e.code.match(/^Digit([1-5])$/);
+      if (digitMatch) {
+        setLive2VisibleCount(parseInt(digitMatch[1], 10));
+        return;
+      }
     }
 
     switch (e.key) {
