@@ -134,20 +134,11 @@ export function Dashboard() {
   return (
     <div className="h-screen w-screen bg-gradient-to-br from-[#0a0a0f] to-[#1a1a2e] text-white flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="flex-shrink-0 text-center pt-8 pb-4">
-        <img
-          src="/LBR-White-blue.svg"
-          alt="Licht.Blick.Raum"
-          className="h-12 mx-auto"
-          onError={(e) => {
-            // Fallback if logo doesn't exist
-            (e.target as HTMLImageElement).style.display = 'none';
-          }}
-        />
+      <header className="flex-shrink-0 text-center py-6">
         <img
           src="/LICHT-BLICK-RAUM-TYPO-Logo.svg"
           alt="Licht.Blick.Raum"
-          className="h-4 mx-auto mt-2 opacity-60"
+          className="h-6 mx-auto"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = 'none';
           }}
