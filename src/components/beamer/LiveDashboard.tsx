@@ -37,9 +37,9 @@ export function LiveDashboard({ data, recentImages, settings, isLoading }: LiveD
   return (
     <div className="h-full w-full p-6 flex flex-col gap-6">
       {/* Top Row: Camera Feed + Rankings (60% height) */}
-      <div className="grid grid-cols-3 gap-6 flex-[6]">
+      <div className="grid grid-cols-3 gap-6 flex-[6] min-h-0">
         {/* Camera Feed - Takes 2 columns */}
-        <motion.div {...fadeIn} className="col-span-2">
+        <motion.div {...fadeIn} className="col-span-2 h-full">
           <CameraFeed
             url={settings.cameraUrl}
             className="h-full"
@@ -48,7 +48,7 @@ export function LiveDashboard({ data, recentImages, settings, isLoading }: LiveD
         </motion.div>
 
         {/* Rankings - Takes 1 column, more entries */}
-        <motion.div {...fadeIn} transition={{ delay: 0.1 }}>
+        <motion.div {...fadeIn} transition={{ delay: 0.1 }} className="h-full">
           <Rankings
             entries={data?.overall || []}
             className="h-full"
@@ -58,9 +58,9 @@ export function LiveDashboard({ data, recentImages, settings, isLoading }: LiveD
       </div>
 
       {/* Bottom Row: Recent Uploads + Countdown (40% height) */}
-      <div className="grid grid-cols-4 gap-6 flex-[4]">
+      <div className="grid grid-cols-4 gap-6 flex-[4] min-h-0">
         {/* Recent Uploads - Takes 3 columns */}
-        <motion.div {...fadeIn} transition={{ delay: 0.2 }} className="col-span-3">
+        <motion.div {...fadeIn} transition={{ delay: 0.2 }} className="col-span-3 h-full">
           <RecentUploads
             images={recentImages}
             className="h-full"
@@ -68,11 +68,10 @@ export function LiveDashboard({ data, recentImages, settings, isLoading }: LiveD
         </motion.div>
 
         {/* Countdown Timer - Takes 1 column, right side */}
-        <motion.div {...fadeIn} transition={{ delay: 0.3 }}>
+        <motion.div {...fadeIn} transition={{ delay: 0.3 }} className="h-full">
           <CountdownTimer
             endTime={settings.countdownEndTime}
             className="h-full"
-            label="Nächste Runde"
           />
         </motion.div>
       </div>
