@@ -89,7 +89,7 @@ export function LeaderCard({ entry, variant }: LeaderCardProps) {
           <p className={`font-semibold truncate ${isFirst ? 'text-2xl' : 'text-xl'}`}>
             {entry.user_name}
           </p>
-          <p className="text-wyt-text-muted text-sm truncate mb-2">
+          <p className="text-white/80 text-sm truncate mb-2">
             {entry.challenge_title}
           </p>
           <div className={`text-yellow-400 font-bold ${isFirst ? 'text-3xl' : 'text-2xl'}`}>
@@ -115,7 +115,7 @@ export function LeaderCard({ entry, variant }: LeaderCardProps) {
 
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
         <p className="text-2xl font-semibold truncate">{entry.user_name}</p>
-        <p className="text-wyt-text-muted text-sm truncate mb-2">
+        <p className="text-white/80 text-sm truncate mb-2">
           {entry.challenge_title}
         </p>
         <div className="text-yellow-400 text-3xl font-bold">
