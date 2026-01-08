@@ -144,9 +144,14 @@ export function Dashboard() {
             (e.target as HTMLImageElement).style.display = 'none';
           }}
         />
-        <p className="text-sm tracking-[0.3em] text-wyt-text-muted mt-2 uppercase">
-          Event Dashboard
-        </p>
+        <img
+          src="/LICHT-BLICK-RAUM-TYPO-Logo.svg"
+          alt="Licht.Blick.Raum"
+          className="h-4 mx-auto mt-2 opacity-60"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
+        />
       </header>
 
       {/* Content */}
