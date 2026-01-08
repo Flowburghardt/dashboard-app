@@ -101,11 +101,14 @@ export function UploadsTicker({
   }[visibleCount] || 'grid-cols-5';
 
   // Calculate max width for centered layout with fewer images
-  const maxWidthClass = visibleCount <= 3 ? 'max-w-5xl' : 'max-w-7xl';
+  // For 1-2 images: constrain width to keep them centered and not too large
+  // For 3-5 images: use full width with minimal padding
+  const maxWidthClass = visibleCount <= 2 ? 'max-w-4xl' : '';
+  const paddingClass = visibleCount <= 2 ? 'px-8' : 'px-4';
 
   return (
     <div className={`flex items-center justify-center h-full ${className}`}>
-      <div className={`grid ${gridCols} gap-6 w-full ${maxWidthClass} mx-auto px-8`}>
+      <div className={`grid ${gridCols} gap-6 w-full ${maxWidthClass} mx-auto ${paddingClass}`}>
         <AnimatePresence mode="popLayout">
           {visibleImages.map((image, index) => {
             const isNew = newImageIds.has(image.id);
