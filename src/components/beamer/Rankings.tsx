@@ -21,13 +21,13 @@ export function Rankings({ entries, className = '', limit = 5 }: RankingsProps) 
   }
 
   return (
-    <div className={`bg-wyt-bg-card rounded-lg p-6 ${className}`}>
-      <div className="flex items-center gap-2 mb-6">
+    <div className={`bg-wyt-bg-card rounded-lg p-6 flex flex-col ${className}`}>
+      <div className="flex items-center gap-2 mb-4 flex-shrink-0">
         <Trophy className="w-6 h-6 text-wyt-accent" />
         <h3 className="text-xl font-bold text-wyt-text">Top {limit}</h3>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3 overflow-y-auto scrollbar-hide flex-1">
         {topEntries.map((entry, index) => (
           <motion.div
             key={entry.id}
