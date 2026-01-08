@@ -12,7 +12,7 @@ export function LeaderboardView({ apiUrl, className = '' }: LeaderboardViewProps
 
   if (isLoading) {
     return (
-      <div className={`flex items-center justify-center bg-wyt-bg-card rounded-lg ${className}`}>
+      <div className={`flex items-center justify-center ${className}`}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -27,7 +27,7 @@ export function LeaderboardView({ apiUrl, className = '' }: LeaderboardViewProps
 
   if (error || !isConnected) {
     return (
-      <div className={`flex items-center justify-center bg-wyt-bg-card rounded-lg ${className}`}>
+      <div className={`flex items-center justify-center ${className}`}>
         <div className="text-center">
           <p className="text-2xl text-red-400 mb-2">Verbindungsfehler</p>
           <p className="text-wyt-text-muted">{error || 'Keine Verbindung zum Server'}</p>
@@ -38,14 +38,14 @@ export function LeaderboardView({ apiUrl, className = '' }: LeaderboardViewProps
 
   if (!data) {
     return (
-      <div className={`flex items-center justify-center bg-wyt-bg-card rounded-lg ${className}`}>
+      <div className={`flex items-center justify-center ${className}`}>
         <p className="text-wyt-text-muted text-lg">Keine Daten verfügbar</p>
       </div>
     );
   }
 
   return (
-    <div className={`bg-wyt-bg-card rounded-lg overflow-hidden flex flex-col ${className}`}>
+    <div className={`overflow-hidden flex flex-col ${className}`}>
       <HeroLeaderboard entries={data.overall} />
     </div>
   );
