@@ -32,12 +32,13 @@ export interface RecentImage {
   uploaded_at: string;
 }
 
-export type BeamerMode = 'hero' | 'grid' | 'ticker' | 'live' | 'visualizer' | 'camera' | 'slideshow';
+export type BeamerMode = 'hero' | 'grid' | 'ticker' | 'live' | 'visualizer' | 'camera' | 'slideshow' | 'leaderboard';
 
 export interface DashboardSettings {
   cameraUrl: string;
   countdownEndTime: string | null;
   countdownLabel?: string;
   slideshowUrl: string;
+  leaderboardUrl: string;
   fotoChallengeApiUrl: string;
 }

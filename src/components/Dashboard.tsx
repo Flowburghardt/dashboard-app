@@ -5,6 +5,7 @@ import { LiveDashboard } from './beamer/LiveDashboard';
 import { MusicVisualizer } from './beamer/MusicVisualizer';
 import { CameraFeed } from './beamer/CameraFeed';
 import { SlideshowView } from './beamer/SlideshowView';
+import { LeaderboardView } from './beamer/LeaderboardView';
 import { TimerControlModal } from './beamer/TimerControlModal';
 import type { BeamerMode, DashboardSettings } from './beamer/types';
 
@@ -21,6 +22,7 @@ const defaultSettings: DashboardSettings = {
   // Set to event time: 10. Januar 2025, 20:00 Uhr
   countdownEndTime: '2025-01-10T20:00:00',
   slideshowUrl: import.meta.env.VITE_SLIDESHOW_URL || 'http://localhost:5176',
+  leaderboardUrl: import.meta.env.VITE_LEADERBOARD_URL || 'https://foto.wytspace.studio/beamer',
   fotoChallengeApiUrl: import.meta.env.VITE_FOTO_CHALLENGE_API || 'http://localhost:3000/api',
 };
 
@@ -86,6 +88,10 @@ export function Dashboard() {
         break;
       case '4':
         setMode('camera');
+        setAutoSwitch(false);
+        break;
+      case '5':
+        setMode('leaderboard');
         setAutoSwitch(false);
         break;
       case ' ':
@@ -175,9 +181,13 @@ export function Dashboard() {
               <motion.div key="visualizer" {...fadeTransition} className="h-full p-6">
                 <MusicVisualizer className="h-full" />
               </motion.div>
-            ) : (
+            ) : mode === 'camera' ? (
               <motion.div key="camera" {...fadeTransition} className="h-full p-6">
                 <CameraFeed url={settings.cameraUrl} className="h-full" showControls />
+              </motion.div>
+            ) : (
+              <motion.div key="leaderboard" {...fadeTransition} className="h-full p-6">
+                <LeaderboardView url={settings.leaderboardUrl} className="h-full" />
               </motion.div>
             )}
           </AnimatePresence>
@@ -233,6 +243,10 @@ export function Dashboard() {
             <span className={mode === 'camera' ? 'text-wyt-accent font-semibold' : 'opacity-60'}>
               Camera
             </span>
+            <span className="opacity-40">/</span>
+            <span className={mode === 'leaderboard' ? 'text-wyt-accent font-semibold' : 'opacity-60'}>
+              Leaderboard
+            </span>
             {autoSwitch && (
               <span className="ml-1 text-xs bg-wyt-accent/20 text-wyt-accent px-1.5 py-0.5 rounded text-[10px]">
                 AUTO
@@ -240,7 +254,7 @@ export function Dashboard() {
             )}
           </div>
           <div className="text-[10px] opacity-40">
-            [1] Live [2] Slideshow [3] Visualizer [4] Camera [T] Timer [Space] Auto [F] Fullscreen
+            [1] Live [2] Slideshow [3] Visualizer [4] Camera [5] Leaderboard [T] Timer [Space] Auto [F] Fullscreen
           </div>
         </div>
       </footer>
