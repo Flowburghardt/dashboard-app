@@ -37,9 +37,9 @@ export function CameraFeed({ url, className = '', showControls = false }: Camera
   }
 
   return (
-    <div className={`relative bg-wyt-bg-card rounded-lg overflow-hidden ${className}`}>
+    <div className={`relative bg-wyt-bg-card rounded-lg overflow-hidden flex items-center justify-center ${className}`}>
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-wyt-bg-card">
+        <div className="absolute inset-0 flex items-center justify-center bg-wyt-bg-card z-10">
           <div className="flex flex-col items-center">
             <Camera className="w-12 h-12 text-wyt-accent animate-pulse mb-2" />
             <p className="text-wyt-text-muted text-sm">Kamera lädt...</p>
@@ -48,7 +48,7 @@ export function CameraFeed({ url, className = '', showControls = false }: Camera
       )}
 
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-wyt-bg-card">
+        <div className="absolute inset-0 flex items-center justify-center bg-wyt-bg-card z-10">
           <div className="flex flex-col items-center">
             <CameraOff className="w-16 h-16 text-red-500 mb-4" />
             <p className="text-red-400 text-sm font-medium">Kamera nicht erreichbar</p>
@@ -61,7 +61,7 @@ export function CameraFeed({ url, className = '', showControls = false }: Camera
       <img
         src={url}
         alt="IP Camera Feed"
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover absolute inset-0"
         onLoad={handleLoad}
         onError={handleError}
       />
