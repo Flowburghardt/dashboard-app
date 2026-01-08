@@ -32,7 +32,7 @@ export interface RecentImage {
   uploaded_at: string;
 }
 
-export type BeamerMode = 'hero' | 'grid' | 'ticker' | 'live' | 'visualizer' | 'camera' | 'slideshow' | 'leaderboard';
+export type BeamerMode = 'hero' | 'grid' | 'ticker' | 'live' | 'live2' | 'visualizer' | 'camera' | 'slideshow' | 'leaderboard';
 
 export interface DashboardSettings {
   cameraUrl: string;

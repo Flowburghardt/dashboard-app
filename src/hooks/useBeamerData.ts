@@ -6,21 +6,23 @@ const API_BASE = import.meta.env.VITE_FOTO_CHALLENGE_API || 'http://localhost:30
 // Backend base for image URLs (without /api suffix)
 const BACKEND_BASE = API_BASE.replace('/api', '');
 
-export function useBeamerData(pollInterval = 5000) {
+export function useBeamerData(pollInterval = 5000, imageLimit = 20) {
   const [data, setData] = useState<BeamerData | null>(null);
   const [recentImages, setRecentImages] = useState<RecentImage[]>([]);
   const [previousData, setPreviousData] = useState<BeamerData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(true);
+  const [newImageIds, setNewImageIds] = useState<Set<number>>(new Set());
   const failedAttempts = useRef(0);
+  const previousImageIds = useRef<Set<number>>(new Set());
 
   const fetchData = useCallback(async () => {
     try {
       // Fetch leaderboard data AND recent images in parallel
       const [leaderboardResponse, recentImagesResponse] = await Promise.all([
         fetch(`${API_BASE}/votes/leaderboard/beamer`),
-        fetch(`${API_BASE}/images/recent?limit=4`)
+        fetch(`${API_BASE}/images/recent?limit=${imageLimit}`)
       ]);
 
       if (!leaderboardResponse.ok) {
@@ -65,6 +67,22 @@ export function useBeamerData(pollInterval = 5000) {
           category_name: img.category_name,
           uploaded_at: img.uploaded_at,
         }));
+
+        // Detect new images (IDs that weren't in the previous fetch)
+        const currentIds = new Set(recent.map(img => img.id));
+        const newIds = new Set<number>();
+        for (const id of currentIds) {
+          if (!previousImageIds.current.has(id)) {
+            newIds.add(id);
+          }
+        }
+
+        // Update previous IDs for next comparison (only after first load)
+        if (previousImageIds.current.size > 0) {
+          setNewImageIds(newIds);
+        }
+        previousImageIds.current = currentIds;
+
         setRecentImages(recent);
       } else {
         // Fallback: if new endpoint fails, clear recent images
@@ -88,7 +106,7 @@ export function useBeamerData(pollInterval = 5000) {
     } finally {
       setIsLoading(false);
     }
-  }, [data]);
+  }, [data, imageLimit]);
 
   useEffect(() => {
     fetchData();
@@ -109,6 +127,11 @@ export function useBeamerData(pollInterval = 5000) {
     return currentIds !== previousIds;
   }, [data, previousData]);
 
+  // Clear new image IDs (call after animation is done)
+  const clearNewImages = useCallback(() => {
+    setNewImageIds(new Set());
+  }, []);
+
   return {
     data,
     recentImages,
@@ -117,6 +140,8 @@ export function useBeamerData(pollInterval = 5000) {
     error,
     isConnected,
     hasChanges: hasChanges(),
+    newImageIds,
+    clearNewImages,
     refetch: fetchData,
   };
 }

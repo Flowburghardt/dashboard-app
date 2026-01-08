@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBeamerData } from '../hooks/useBeamerData';
 import { LiveDashboard } from './beamer/LiveDashboard';
+import { LiveDashboard2 } from './beamer/LiveDashboard2';
 import { MusicVisualizer } from './beamer/MusicVisualizer';
 import { CameraFeed } from './beamer/CameraFeed';
 import { SlideshowView } from './beamer/SlideshowView';
@@ -31,7 +32,8 @@ export function Dashboard() {
   const [autoSwitch, setAutoSwitch] = useState(false);
   const [settings, setSettings] = useState<DashboardSettings>(defaultSettings);
   const [showTimerModal, setShowTimerModal] = useState(false);
-  const { data, recentImages, isLoading, error, isConnected } = useBeamerData(5000);
+  const [live2VisibleCount, setLive2VisibleCount] = useState(5);
+  const { data, recentImages, isLoading, error, isConnected, newImageIds, clearNewImages } = useBeamerData(5000, 20);
 
   // Update settings and persist to localStorage
   const updateSettings = useCallback((updates: Partial<DashboardSettings>) => {
@@ -73,6 +75,12 @@ export function Dashboard() {
 
   // Keyboard controls
   const handleKeyPress = useCallback((e: KeyboardEvent) => {
+    // Shift+1-5: Change visible count for Live2 mode
+    if (e.shiftKey && e.key >= '1' && e.key <= '5') {
+      setLive2VisibleCount(parseInt(e.key, 10));
+      return;
+    }
+
     switch (e.key) {
       case '1':
         setMode('live');
@@ -92,6 +100,10 @@ export function Dashboard() {
         break;
       case '5':
         setMode('leaderboard');
+        setAutoSwitch(false);
+        break;
+      case '6':
+        setMode('live2');
         setAutoSwitch(false);
         break;
       case ' ':
@@ -181,11 +193,22 @@ export function Dashboard() {
               <motion.div key="camera" {...fadeTransition} className="h-full p-6">
                 <CameraFeed url={settings.cameraUrl} className="h-full" showControls />
               </motion.div>
-            ) : (
+            ) : mode === 'leaderboard' ? (
               <motion.div key="leaderboard" {...fadeTransition} className="h-full p-6">
                 <LeaderboardView apiUrl={settings.fotoChallengeApiUrl} className="h-full" />
               </motion.div>
-            )}
+            ) : mode === 'live2' ? (
+              <motion.div key="live2" {...fadeTransition} className="h-full">
+                <LiveDashboard2
+                  recentImages={recentImages}
+                  settings={settings}
+                  visibleCount={live2VisibleCount}
+                  newImageIds={newImageIds}
+                  onClearNewImages={clearNewImages}
+                  onTimerClick={() => setShowTimerModal(true)}
+                />
+              </motion.div>
+            ) : null}
           </AnimatePresence>
         )}
       </div>
@@ -243,6 +266,15 @@ export function Dashboard() {
             <span className={mode === 'leaderboard' ? 'text-wyt-accent font-semibold' : 'opacity-60'}>
               Leaderboard
             </span>
+            <span className="opacity-40">/</span>
+            <span className={mode === 'live2' ? 'text-wyt-accent font-semibold' : 'opacity-60'}>
+              Ticker
+            </span>
+            {mode === 'live2' && (
+              <span className="ml-1 text-xs bg-wyt-accent/20 text-wyt-accent px-1.5 py-0.5 rounded text-[10px]">
+                {live2VisibleCount}
+              </span>
+            )}
             {autoSwitch && (
               <span className="ml-1 text-xs bg-wyt-accent/20 text-wyt-accent px-1.5 py-0.5 rounded text-[10px]">
                 AUTO
@@ -250,7 +282,7 @@ export function Dashboard() {
             )}
           </div>
           <div className="text-[10px] opacity-40">
-            [1] Live [2] Slideshow [3] Visualizer [4] Camera [5] Leaderboard [T] Timer [Space] Auto [F] Fullscreen
+            [1-6] Modi [Shift+1-5] Bilder [T] Timer [F] Fullscreen
           </div>
         </div>
       </footer>
