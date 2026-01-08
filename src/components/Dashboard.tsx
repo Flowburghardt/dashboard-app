@@ -5,6 +5,7 @@ import { LiveDashboard } from './beamer/LiveDashboard';
 import { MusicVisualizer } from './beamer/MusicVisualizer';
 import { CameraFeed } from './beamer/CameraFeed';
 import { SlideshowView } from './beamer/SlideshowView';
+import { TimerControlModal } from './beamer/TimerControlModal';
 import type { BeamerMode, DashboardSettings } from './beamer/types';
 
 const fadeTransition = {
@@ -27,7 +28,17 @@ export function Dashboard() {
   const [mode, setMode] = useState<BeamerMode>('live');
   const [autoSwitch, setAutoSwitch] = useState(false);
   const [settings, setSettings] = useState<DashboardSettings>(defaultSettings);
+  const [showTimerModal, setShowTimerModal] = useState(false);
   const { data, recentImages, isLoading, error, isConnected } = useBeamerData(5000);
+
+  // Update settings and persist to localStorage
+  const updateSettings = useCallback((updates: Partial<DashboardSettings>) => {
+    setSettings((prev) => {
+      const newSettings = { ...prev, ...updates };
+      localStorage.setItem('dashboardSettings', JSON.stringify(newSettings));
+      return newSettings;
+    });
+  }, []);
 
   // Load settings from localStorage on mount
   useEffect(() => {
@@ -80,6 +91,10 @@ export function Dashboard() {
       case ' ':
         e.preventDefault();
         setAutoSwitch((prev) => !prev);
+        break;
+      case 't':
+      case 'T':
+        setShowTimerModal(true);
         break;
       case 'f':
       case 'F':
@@ -149,6 +164,7 @@ export function Dashboard() {
                   recentImages={recentImages}
                   settings={settings}
                   isLoading={isLoading}
+                  onTimerClick={() => setShowTimerModal(true)}
                 />
               </motion.div>
             ) : mode === 'slideshow' ? (
@@ -224,10 +240,18 @@ export function Dashboard() {
             )}
           </div>
           <div className="text-[10px] opacity-40">
-            [1] Live [2] Slideshow [3] Visualizer [4] Camera [Space] Auto [F] Fullscreen
+            [1] Live [2] Slideshow [3] Visualizer [4] Camera [T] Timer [Space] Auto [F] Fullscreen
           </div>
         </div>
       </footer>
+
+      {/* Timer Control Modal */}
+      <TimerControlModal
+        isOpen={showTimerModal}
+        onClose={() => setShowTimerModal(false)}
+        settings={settings}
+        onSave={updateSettings}
+      />
     </div>
   );
 }

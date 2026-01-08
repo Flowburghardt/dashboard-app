@@ -37,6 +37,7 @@ export type BeamerMode = 'hero' | 'grid' | 'ticker' | 'live' | 'visualizer' | 'c
 export interface DashboardSettings {
   cameraUrl: string;
   countdownEndTime: string | null;
+  countdownLabel?: string;
   slideshowUrl: string;
   fotoChallengeApiUrl: string;
 }

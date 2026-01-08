@@ -10,6 +10,7 @@ interface LiveDashboardProps {
   recentImages: RecentImage[];
   settings: DashboardSettings;
   isLoading: boolean;
+  onTimerClick?: () => void;
 }
 
 const fadeIn = {
@@ -18,7 +19,7 @@ const fadeIn = {
   transition: { duration: 0.5 },
 };
 
-export function LiveDashboard({ data, recentImages, settings, isLoading }: LiveDashboardProps) {
+export function LiveDashboard({ data, recentImages, settings, isLoading, onTimerClick }: LiveDashboardProps) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -71,7 +72,9 @@ export function LiveDashboard({ data, recentImages, settings, isLoading }: LiveD
         <motion.div {...fadeIn} transition={{ delay: 0.3 }} className="min-h-0">
           <CountdownTimer
             endTime={settings.countdownEndTime}
+            label={settings.countdownLabel}
             className="h-full"
+            onClick={onTimerClick}
           />
         </motion.div>
       </div>

@@ -5,9 +5,10 @@ interface CountdownTimerProps {
   endTime: string | null;
   className?: string;
   label?: string;
+  onClick?: () => void;
 }
 
-export function CountdownTimer({ endTime, className = '', label = 'Deadline Uploads' }: CountdownTimerProps) {
+export function CountdownTimer({ endTime, className = '', label = 'Deadline Uploads', onClick }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<{
     hours: number;
     minutes: number;
@@ -43,9 +44,13 @@ export function CountdownTimer({ endTime, className = '', label = 'Deadline Uplo
 
   if (!endTime) {
     return (
-      <div className={`flex flex-col items-center justify-center bg-wyt-bg-card rounded-lg p-6 ${className}`}>
+      <div
+        className={`flex flex-col items-center justify-center bg-wyt-bg-card rounded-lg p-6 ${onClick ? 'cursor-pointer hover:bg-wyt-bg-light transition-colors' : ''} ${className}`}
+        onClick={onClick}
+      >
         <Clock className="w-12 h-12 text-wyt-text-muted mb-3" />
         <p className="text-wyt-text-muted text-sm">Kein Countdown aktiv</p>
+        {onClick && <p className="text-wyt-text-muted text-xs mt-2">Klicken zum Einstellen</p>}
       </div>
     );
   }
@@ -57,7 +62,10 @@ export function CountdownTimer({ endTime, className = '', label = 'Deadline Uplo
   const isUrgent = timeLeft.total > 0 && timeLeft.total < 60000; // Last minute
 
   return (
-    <div className={`flex flex-col items-center justify-center bg-wyt-bg-card rounded-lg p-6 ${className}`}>
+    <div
+      className={`flex flex-col items-center justify-center bg-wyt-bg-card rounded-lg p-6 ${onClick ? 'cursor-pointer hover:bg-wyt-bg-light transition-colors' : ''} ${className}`}
+      onClick={onClick}
+    >
       <div className="flex items-center gap-2 mb-4">
         <Timer className={`w-5 h-5 ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`} />
         <span className="text-sm text-wyt-text-muted uppercase tracking-wider">{label}</span>
