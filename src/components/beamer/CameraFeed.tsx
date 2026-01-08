@@ -37,7 +37,7 @@ export function CameraFeed({ url, className = '', showControls = false }: Camera
   }
 
   return (
-    <div className={`relative bg-wyt-bg-card rounded-lg overflow-hidden flex items-center justify-center ${className}`}>
+    <div className={`relative bg-wyt-bg-card rounded-lg overflow-hidden ${className}`}>
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-wyt-bg-card z-10">
           <div className="flex flex-col items-center">
@@ -61,7 +61,7 @@ export function CameraFeed({ url, className = '', showControls = false }: Camera
       <img
         src={url}
         alt="IP Camera Feed"
-        className="w-full h-full object-cover absolute inset-0"
+        className="w-full h-full object-cover"
         onLoad={handleLoad}
         onError={handleError}
       />
