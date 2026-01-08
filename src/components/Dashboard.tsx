@@ -134,11 +134,11 @@ export function Dashboard() {
   return (
     <div className="h-screen w-screen bg-gradient-to-br from-[#0a0a0f] to-[#1a1a2e] text-white flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="flex-shrink-0 text-center py-6">
+      <header className="flex-shrink-0 text-center pt-6 pb-3">
         <img
           src="/LICHT-BLICK-RAUM-TYPO-Logo.svg"
           alt="Licht.Blick.Raum"
-          className="h-6 mx-auto"
+          className="h-20 mx-auto"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = 'none';
           }}
