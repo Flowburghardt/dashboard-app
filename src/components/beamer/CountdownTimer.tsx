@@ -7,7 +7,7 @@ interface CountdownTimerProps {
   label?: string;
 }
 
-export function CountdownTimer({ endTime, className = '', label = 'Nächste Runde' }: CountdownTimerProps) {
+export function CountdownTimer({ endTime, className = '', label = 'Deadline Uploads' }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<{
     hours: number;
     minutes: number;
@@ -68,28 +68,28 @@ export function CountdownTimer({ endTime, className = '', label = 'Nächste Rund
         {timeLeft.hours > 0 && (
           <>
             <div className="flex flex-col items-center">
-              <div className={`text-5xl font-bold tabular-nums ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>
+              <div className={`text-8xl font-bold tabular-nums ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>
                 {String(timeLeft.hours).padStart(2, '0')}
               </div>
               <span className="text-xs text-wyt-text-muted mt-1">STD</span>
             </div>
-            <div className={`text-5xl font-bold ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>:</div>
+            <div className={`text-8xl font-bold ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>:</div>
           </>
         )}
 
         {/* Minutes */}
         <div className="flex flex-col items-center">
-          <div className={`text-5xl font-bold tabular-nums ${isUrgent ? 'text-red-500 animate-pulse' : 'text-wyt-accent'}`}>
+          <div className={`text-8xl font-bold tabular-nums ${isUrgent ? 'text-red-500 animate-pulse' : 'text-wyt-accent'}`}>
             {String(timeLeft.minutes).padStart(2, '0')}
           </div>
           <span className="text-xs text-wyt-text-muted mt-1">MIN</span>
         </div>
 
-        <div className={`text-5xl font-bold ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>:</div>
+        <div className={`text-8xl font-bold ${isUrgent ? 'text-red-500' : 'text-wyt-accent'}`}>:</div>
 
         {/* Seconds */}
         <div className="flex flex-col items-center">
-          <div className={`text-5xl font-bold tabular-nums ${isUrgent ? 'text-red-500 animate-pulse' : 'text-wyt-accent'}`}>
+          <div className={`text-8xl font-bold tabular-nums ${isUrgent ? 'text-red-500 animate-pulse' : 'text-wyt-accent'}`}>
             {String(timeLeft.seconds).padStart(2, '0')}
           </div>
           <span className="text-xs text-wyt-text-muted mt-1">SEK</span>

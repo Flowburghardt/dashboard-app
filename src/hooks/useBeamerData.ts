@@ -17,8 +17,12 @@ export function useBeamerData(pollInterval = 5000) {
 
   const fetchData = useCallback(async () => {
     try {
-      // Fetch leaderboard data
-      const leaderboardResponse = await fetch(`${API_BASE}/votes/leaderboard/beamer`);
+      // Fetch leaderboard data AND recent images in parallel
+      const [leaderboardResponse, recentImagesResponse] = await Promise.all([
+        fetch(`${API_BASE}/votes/leaderboard/beamer`),
+        fetch(`${API_BASE}/images/recent?limit=4`)
+      ]);
+
       if (!leaderboardResponse.ok) {
         throw new Error('Failed to fetch leaderboard data');
       }
@@ -51,15 +55,22 @@ export function useBeamerData(pollInterval = 5000) {
         }));
       }
 
-      // Extract recent images from leaderboard (top 4 entries)
-      const recent: RecentImage[] = newData.overall.slice(0, 4).map((entry) => ({
-        id: entry.id,
-        url: entry.url, // Already absolute from above conversion
-        user_name: entry.user_name,
-        category_name: entry.category_name || entry.challenge_title,
-        uploaded_at: new Date().toISOString(), // We don't have timestamp, use current
-      }));
-      setRecentImages(recent);
+      // Handle recent images from new endpoint
+      if (recentImagesResponse.ok) {
+        const recentData = await recentImagesResponse.json();
+        const recent: RecentImage[] = recentData.map((img: RecentImage) => ({
+          id: img.id,
+          url: img.url.startsWith('http') ? img.url : BACKEND_BASE + img.url,
+          user_name: img.user_name,
+          category_name: img.category_name,
+          uploaded_at: img.uploaded_at,
+        }));
+        setRecentImages(recent);
+      } else {
+        // Fallback: if new endpoint fails, clear recent images
+        console.warn('Failed to fetch recent images, using empty array');
+        setRecentImages([]);
+      }
 
       setPreviousData(data);
       setData(newData);

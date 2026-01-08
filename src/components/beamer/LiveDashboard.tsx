@@ -36,8 +36,8 @@ export function LiveDashboard({ data, recentImages, settings, isLoading }: LiveD
 
   return (
     <div className="h-full w-full p-6 flex flex-col gap-6">
-      {/* Top Row: Camera Feed + Rankings (70% height) */}
-      <div className="grid grid-cols-3 gap-6 flex-[7]">
+      {/* Top Row: Camera Feed + Rankings (60% height) */}
+      <div className="grid grid-cols-3 gap-6 flex-[6]">
         {/* Camera Feed - Takes 2 columns */}
         <motion.div {...fadeIn} className="col-span-2">
           <CameraFeed
@@ -57,8 +57,8 @@ export function LiveDashboard({ data, recentImages, settings, isLoading }: LiveD
         </motion.div>
       </div>
 
-      {/* Bottom Row: Recent Uploads + Countdown (30% height) */}
-      <div className="grid grid-cols-4 gap-6 flex-[3]">
+      {/* Bottom Row: Recent Uploads + Countdown (40% height) */}
+      <div className="grid grid-cols-4 gap-6 flex-[4]">
         {/* Recent Uploads - Takes 3 columns */}
         <motion.div {...fadeIn} transition={{ delay: 0.2 }} className="col-span-3">
           <RecentUploads
