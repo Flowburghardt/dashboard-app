@@ -197,7 +197,12 @@ export function Dashboard() {
               </motion.div>
             ) : mode === 'slideshow' ? (
               <motion.div key="slideshow" {...fadeTransition} className="h-full p-6">
-                <SlideshowView url={settings.slideshowUrl} className="h-full" />
+                <SlideshowView
+                  url={settings.slideshowUrl}
+                  className="h-full"
+                  recentImages={recentImages}
+                  newImageIds={newImageIds}
+                />
               </motion.div>
             ) : mode === 'visualizer' ? (
               <motion.div key="visualizer" {...fadeTransition} className="h-full p-6">
