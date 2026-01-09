@@ -161,7 +161,7 @@ export function Dashboard() {
         />
         {/* Timer - only visible in live2 mode */}
         {mode === 'live2' && (
-          <div className="absolute right-8 top-1/2 -translate-y-1/2">
+          <div className="absolute right-8 top-1/2 -translate-y-1/2 z-[8]">
             <CountdownTimer
               endTime={settings.countdownEndTime}
               label={settings.countdownLabel || 'Deadline Uploads'}
