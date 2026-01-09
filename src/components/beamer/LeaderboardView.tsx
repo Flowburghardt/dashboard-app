@@ -1,6 +1,10 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLeaderboardData } from '../../hooks/useLeaderboardData';
 import { HeroLeaderboard } from './HeroLeaderboard';
+import { CategoryGridView } from './CategoryGridView';
+
+type LeaderboardSubView = 'hero' | 'grid';
 
 interface LeaderboardViewProps {
   apiUrl: string;
@@ -9,6 +13,18 @@ interface LeaderboardViewProps {
 
 export function LeaderboardView({ apiUrl, className = '' }: LeaderboardViewProps) {
   const { data, isLoading, error, isConnected } = useLeaderboardData(apiUrl);
+  const [subView, setSubView] = useState<LeaderboardSubView>('hero');
+
+  // Keyboard handler for Shift+2 (Grid View toggle)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.code === 'Digit2') {
+        setSubView(prev => prev === 'grid' ? 'hero' : 'grid');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   if (isLoading) {
     return (
@@ -46,7 +62,11 @@ export function LeaderboardView({ apiUrl, className = '' }: LeaderboardViewProps
 
   return (
     <div className={`overflow-hidden flex flex-col ${className}`}>
-      <HeroLeaderboard entries={data.overall} />
+      {subView === 'grid' && data.categories ? (
+        <CategoryGridView categories={data.categories} overall={data.overall} />
+      ) : (
+        <HeroLeaderboard entries={data.overall} />
+      )}
     </div>
   );
 }
